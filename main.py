@@ -1,3 +1,4 @@
+
 import os
 import toml
 import time
@@ -10,38 +11,28 @@ def password1():
     }
 }
 
-
     while True:
         print("Select operation.")
-        print("1. Select config file location.")
-        print("2. Change the password ")
-        print("3. Select file")
-        print("4. Access file")
-        print("5. List saved files")
-        print("6. Exit")  
+        print("1. Change the password ")
+        print("2. Select file")
+        print("3. Execute file")
+        print("4. List saved files")
+        print("5. Exit")  
 
         choice = input("")
-
-        if choice == '1':
-            directory = input("Where would you like to save the config file at? (e.g /home/evilae/) ")
-            if os.path.exists(directory):
-                print(f"File path was found! The config file will be saved at: {directory}")
-                os.makedirs(directory, exist_ok=True)
-                config_file_path = os.path.join(directory, 'config.toml')
-                with open(config_file_path, 'w') as config_file:
-                    toml.dump(config, config_file)
-                    continue
-            else:
-                print("Invalid path. Please provide a valid path.")
-                continue
+        config_file_path = '/home/evilae/.config/config.toml' # I'll will change that at some point
                 
-
-        if choice == '2': 
+        if choice == '1': 
+                if os.path.exists(config_file_path):
+                    config_reload = toml.load(config_file_path)
             new_password = input("What should the password be? ")
+            config['Password']['Password'] = new_password
+            with open(config_file_path, 'w') as config_file:
+                toml.dump(config, config_file)
             print("Password was saved!")
             continue
 
-        elif choice == '3':        
+        elif choice == '2':        
             file = input("Which file would you want to put in the 'safe'? ")
             if not os.path.exists(file):
                 print("File was not found!")
@@ -60,6 +51,8 @@ def password1():
                 print(f"The file extension {file_extension} is not allowed!")
                 print("The file was not saved!")
                 continue
+        elif choice == '4':
+            print("do something idk")
 
         elif choice == '5':
             if file:  
