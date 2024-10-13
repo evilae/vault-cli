@@ -1,0 +1,79 @@
+import os
+import toml
+import time
+
+def password1():
+
+    config = {
+    'Password': {
+        'Password': None, 
+    }
+}
+
+
+    while True:
+        print("Select operation.")
+        print("1. Select config file location.")
+        print("2. Change the password ")
+        print("3. Select file")
+        print("4. Access file")
+        print("5. List saved files")
+        print("6. Exit")  
+
+        choice = input("")
+
+        if choice == '1':
+            directory = input("Where would you like to save the config file at? (e.g /home/evilae/) ")
+            if os.path.exists(directory):
+                print(f"File path was found! The config file will be saved at: {directory}")
+                os.makedirs(directory, exist_ok=True)
+                config_file_path = os.path.join(directory, 'config.toml')
+                with open(config_file_path, 'w') as config_file:
+                    toml.dump(config, config_file)
+                    continue
+            else:
+                print("Invalid path. Please provide a valid path.")
+                continue
+                
+
+        if choice == '2': 
+            new_password = input("What should the password be? ")
+            print("Password was saved!")
+            continue
+
+        elif choice == '3':        
+            file = input("Which file would you want to put in the 'safe'? ")
+            if not os.path.exists(file):
+                print("File was not found!")
+                continue 
+            else:
+                print(f"The file {file} was found!")
+                continue
+
+            file_extension = input("Specify the file extension (.mp3, .mp4, .png etc): ")
+            allowed_extensions = [".mp4", ".mp3", ".jpeg", ".png", ".jpg", ".gif", ".webp", ".mkv", ".avi", ".mov"]
+            if file_extension in allowed_extensions:
+                print(f"File extension {file_extension} is allowed!")
+                print("Your file was saved in the vault")
+                continue
+            else: 
+                print(f"The file extension {file_extension} is not allowed!")
+                print("The file was not saved!")
+                continue
+
+        elif choice == '5':
+            if file:  
+                print(f"Executing file: {file}")
+                os.system(f"mpv {file}")  
+                print("File was executed!")
+                continue
+            else:
+                print("No file selected!")
+                continue
+        elif choice == '6':
+            print("Exiting.")
+            break 
+        else:
+            print("Invalid choice. Please try again.")
+
+password1()
