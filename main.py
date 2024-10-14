@@ -1,4 +1,3 @@
-
 import os
 import toml
 import time
@@ -8,6 +7,9 @@ def password1():
     config = {
     'Password': {
         'Password': None, 
+    },
+    'Files': {
+        'File Locations': []
     }
 }
 
@@ -23,6 +25,10 @@ def password1():
         config_file_path = '/home/evilae/.config/config.toml' # I'll will change that at some point
                 
         if choice == '1': 
+            if config_file_path is None:
+                print("Please select a config file location first.")
+                continue
+
                 if os.path.exists(config_file_path):
                     config_reload = toml.load(config_file_path)
             new_password = input("What should the password be? ")
@@ -39,18 +45,26 @@ def password1():
                 continue 
             else:
                 print(f"The file {file} was found!")
-                continue
-
             file_extension = input("Specify the file extension (.mp3, .mp4, .png etc): ")
             allowed_extensions = [".mp4", ".mp3", ".jpeg", ".png", ".jpg", ".gif", ".webp", ".mkv", ".avi", ".mov"]
             if file_extension in allowed_extensions:
                 print(f"File extension {file_extension} is allowed!")
-                print("Your file was saved in the vault")
-                continue
-            else: 
-                print(f"The file extension {file_extension} is not allowed!")
+                config['Files'] ['File Locations'].append(file_path)
+                print(f"File was saved!")
+            else:
+                print(f"File path is either invalid or {file_extension} is not allowed! Please provide a valid path / valid file extension ")
                 print("The file was not saved!")
                 continue
+
+        elif choice == '3':
+            file_path = input("What's the path to the file? (MAKE SURE IT IS THE FULL PATH) ")
+            if os.path.exists(file_path):
+                config['Files'] ['File Locations'].append(file_path)
+                print(f"File was saved!")
+            else:
+                print("File path is invalid! Please provide a valid path")
+            continue
+
         elif choice == '4':
             print("do something idk")
 
