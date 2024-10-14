@@ -39,12 +39,12 @@ def password1():
             continue
 
         elif choice == '2':        
-            file = input("Which file would you want to put in the 'safe'? ")
-            if not os.path.exists(file):
+            file_path = input("Which file would you want to put in the 'safe'? ")
+            if not os.path.exists(file_path):
                 print("File was not found!")
                 continue 
             else:
-                print(f"The file {file} was found!")
+                print(f"The file {file_path} was found!")
             file_extension = input("Specify the file extension (.mp3, .mp4, .png etc): ")
             allowed_extensions = [".mp4", ".mp3", ".jpeg", ".png", ".jpg", ".gif", ".webp", ".mkv", ".avi", ".mov"]
             if file_extension in allowed_extensions:
@@ -57,19 +57,13 @@ def password1():
                 continue
 
         elif choice == '3':
-            file_path = input("What's the path to the file? (MAKE SURE IT IS THE FULL PATH) ")
-            if os.path.exists(file_path):
-                config['Files'] ['File Locations'].append(file_path)
-                print(f"File was saved!")
-            else:
-                print("File path is invalid! Please provide a valid path")
-            continue
+            print("do another something idk")
 
         elif choice == '4':
             print("do something idk")
 
         elif choice == '5':
-            if file:  
+            if file_path:  
                 print(f"Executing file: {file}")
                 os.system(f"mpv {file}")  
                 print("File was executed!")
