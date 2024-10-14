@@ -38,18 +38,24 @@ def password1():
             print("Password was saved!")
             continue
 
-        elif choice == '2':        
+        elif choice == '2':
+            config = toml.load(config_file_path)
             file_path = input("Which file would you want to put in the 'safe'? ")
             if not os.path.exists(file_path):
                 print("File was not found!")
                 continue 
             else:
                 print(f"The file {file_path} was found!")
-            file_extension = input("Specify the file extension (.mp3, .mp4, .png etc): ")
             allowed_extensions = [".mp4", ".mp3", ".jpeg", ".png", ".jpg", ".gif", ".webp", ".mkv", ".avi", ".mov"]
+            file_extension = input("Specify the file extension (.mp3, .mp4, .png etc): ")
             if file_extension in allowed_extensions:
+                toml.load(config_file_path)
                 print(f"File extension {file_extension} is allowed!")
-                config['Files'] ['File Locations'].append(file_path)
+                if 'File Locations' not in config['Files']:
+                    config['Files']['File Locations'] = []
+                config['Files']['File Locations'].append(file_path)
+                with open(config_file_path, 'w') as config_file:
+                    toml.dump(config, config_file)
                 print(f"File was saved!")
             else:
                 print(f"File path is either invalid or {file_extension} is not allowed! Please provide a valid path / valid file extension ")
@@ -64,8 +70,8 @@ def password1():
 
         elif choice == '5':
             if file_path:  
-                print(f"Executing file: {file}")
-                os.system(f"mpv {file}")  
+                print(f"Executing file: {file_path}")
+                os.system(f"mpv {file_path}")  
                 print("File was executed!")
                 continue
             else:
