@@ -72,16 +72,24 @@ def password1():
         elif choice == '5':
             with open(f'{config_file_path}', 'r') as config_file:
                 config = toml.load(config_file)
-            file_path = input("Which file would you like to execute? ")
-            
-            if file_path:
-                if file_path in config.get('Files', {}).get('File Locations', []):
-                    print(f"Executing file: {file_path}") 
-                    os.system(f"mpv {file_path}")
-                    print("File was executed!")
+            password_check = input("What's the password? ")
+            config_password = config.get('Password', {}).get ('Password')
+            if password_check == config_password:
+                file_path = input("Which file would you like to execute? ")
+                file_split, file_extension_5 = os.path.splitext(file_path)        
+                if file_path:
+                    if file_path in config.get('Files', {}).get('File Locations', []):
+                        if file_extension_5 in [".jpeg", ".png", ".jpg", ".webp"]:
+                            print(f"Executing file (feh): {file_path}")
+                            os.system(f"feh {file_path}")
+                            print("File was executed")
+                        else:
+                            print(f"Executing file: {file_path}") 
+                            os.system(f"mpv {file_path}")
+                            print("File was executed!")
                 continue
             else:
-                print("No file selected!")
+                print("No file selected / password is incorrect!")
                 continue
         elif choice == '6':
             print("Exiting.")
