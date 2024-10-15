@@ -17,9 +17,10 @@ def password1():
         print("Select operation.")
         print("1. Change the password ")
         print("2. Select file")
-        print("3. Execute file")
+        print("3. Remove file")
         print("4. List saved files")
-        print("5. Exit")  
+        print("5. Execute file") 
+        print("6. Exit") 
 
         choice = input("")
         config_file_path = '/home/evilae/.config/config.toml' # I'll will change that at some point
@@ -69,10 +70,15 @@ def password1():
             print("do something idk")
 
         elif choice == '5':
-            if file_path:  
-                print(f"Executing file: {file_path}")
-                os.system(f"mpv {file_path}")  
-                print("File was executed!")
+            with open(f'{config_file_path}', 'r') as config_file:
+                config = toml.load(config_file)
+            file_path = input("Which file would you like to execute? ")
+            
+            if file_path:
+                if file_path in config.get('Files', {}).get('File Locations', []):
+                    print(f"Executing file: {file_path}") 
+                    os.system(f"mpv {file_path}")
+                    print("File was executed!")
                 continue
             else:
                 print("No file selected!")
